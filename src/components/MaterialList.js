@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Card, CardContent, Typography, Box, Grid, Button } from '@mui/material';
+import { Card, CardContent, Typography, Grid, Button, Box } from '@mui/material';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import DownloadIcon from '@mui/icons-material/Download';
 
 function MaterialList() {
@@ -8,11 +9,20 @@ function MaterialList() {
   const [materials, setMaterials] = useState([]);
   const [modules, setModules] = useState([]);
   const [selectedModule, setSelectedModule] = useState(moduleId);
+  const [lockedModules, setLockedModules] = useState([]);
   const navigate = useNavigate();
 
   // Fetch all materials for the selected module
   useEffect(() => {
-    fetch(`http://localhost:8000/api/modules/${selectedModule}/materials/`)
+    const token = localStorage.getItem('token'); // Retrieve the JWT token from localStorage
+
+    fetch(`http://localhost:8000/api/modules/${selectedModule}/materials/`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`, // Include the JWT token in the Authorization header
+        'Content-Type': 'application/json'
+      }
+    })
       .then(response => response.json())
       .then(data => setMaterials(data))
       .catch(error => console.error('Error fetching materials:', error));
@@ -20,15 +30,31 @@ function MaterialList() {
 
   // Fetch all modules for the current course
   useEffect(() => {
-    fetch(`http://localhost:8000/api/courses/${courseId}/modules/`)
+    const token = localStorage.getItem('token'); // Retrieve the JWT token from localStorage
+
+    fetch(`http://localhost:8000/api/courses/${courseId}/modules/`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`, // Include the JWT token in the Authorization header
+        'Content-Type': 'application/json'
+      }
+    })
       .then(response => response.json())
-      .then(data => setModules(data))
+      .then(data => {
+        setModules(data);
+        // Check if modules are locked
+        setLockedModules(data.filter(module => module.has_quiz && !module.passed).map(module => module.id));
+      })
       .catch(error => console.error('Error fetching modules:', error));
-  }, []);
+  }, [courseId]);
 
   const handleModuleClick = (id) => {
     setSelectedModule(id);
-    navigate(`/courses/${courseId}/modules/${id}/materials`);
+    // navigate(`/courses/${courseId}/modules/${id}/materials`);
+  };
+
+  const handleQuizClick = (moduleId) => {
+    navigate(`/courses/${courseId}/modules/${moduleId}/quiz`);
   };
 
   return (
@@ -52,7 +78,6 @@ function MaterialList() {
                     }
                   }}
                 >
-                  {/* Sequential numbering */}
                   <Typography variant="h5" sx={{ alignSelf: 'flex-start', mb: 2 }}>
                     {index + 1}. {material.title}
                   </Typography>
@@ -115,7 +140,30 @@ function MaterialList() {
                   <Typography variant="body2" color="textSecondary">
                     {module.description}
                   </Typography>
+                  {module.has_quiz && (
+                    <Typography variant="body2" color="warning.main">
+                      {lockedModules.includes(module.id) ? "Quiz Available" : "Quiz Passed"}
+                    </Typography>
+                  )}
                 </CardContent>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', p: 2 }}>
+                  <Button
+                    variant="contained"
+                    endIcon={<ArrowForwardIcon />}
+                    onClick={() => handleModuleClick(module.id)}
+                    disabled={module.locked}  // Disable if the module is locked
+                  >
+                    {module.locked ? "Locked" : "View Materials"}
+                  </Button>
+                  {module.has_quiz && module.locked && (
+                    <Button
+                      variant="outlined"
+                      onClick={() => handleQuizClick(module.id)}
+                    >
+                      Take Quiz
+                    </Button>
+                  )}
+                </Box>
               </Card>
             ))}
           </Box>

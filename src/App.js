@@ -27,6 +27,8 @@ import Page from "./components/Page";
 import Course from "./components/Course";
 import ModuleList from './components/ModuleList';
 import MaterialList from './components/MaterialList';
+import QuizPage from "./components/QuizPage";
+import AdminDashboard from "./components/AdminDashboard";
 
 function App() {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -233,6 +235,8 @@ function App() {
             <Route path="/courses" element={<Course />} />
             <Route path="/courses/:courseId/modules" element={<ModuleList />} />
             <Route path="/courses/:courseId/modules/:moduleId/materials" element={<MaterialList />} />
+            <Route path="/courses/:courseId/modules/:moduleId/quiz" element={<QuizPage />} />
+            <Route path="/admin" element={<AdminDashboard/>} />
           </Routes>
         </div>
       </Router>

@@ -6,14 +6,36 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 function ModuleList() {
   const { courseId } = useParams();
   const [modules, setModules] = useState([]);
+  const [lockedModules, setLockedModules] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`http://localhost:8000/api/courses/${courseId}/modules/`)
+    const token = localStorage.getItem('token'); // Retrieve the JWT token from localStorage
+
+    fetch(`http://localhost:8000/api/courses/${courseId}/modules/`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`, // Include the JWT token in the Authorization header
+        'Content-Type': 'application/json'
+      }
+    })
       .then(response => response.json())
-      .then(data => setModules(data))
+      .then(data => {
+        setModules(data);
+        // Check if modules are locked
+        setLockedModules(data.filter(module => module.has_quiz && !module.passed).map(module => module.id));
+      })
       .catch(error => console.error('Error fetching modules:', error));
   }, [courseId]);
+
+  console.log(modules)
+  const handleModuleClick = (moduleId) => {
+    navigate(`/courses/${courseId}/modules/${moduleId}/materials`);
+  };
+
+  const handleQuizClick = (moduleId) => {
+    navigate(`/courses/${courseId}/modules/${moduleId}/quiz`);
+  };
 
   return (
     <Box sx={{ p: 4 }}>
@@ -35,15 +57,29 @@ function ModuleList() {
                 <Typography variant="body2" color="textSecondary">
                   {module.description}
                 </Typography>
+                {module.has_quiz && (
+                    <Typography variant="body2" color="warning.main">
+                      {lockedModules.includes(module.id) ? "Quiz Available" : "Quiz Passed"}
+                    </Typography>
+                  )}
               </CardContent>
-              <Box sx={{ display: 'flex', justifyContent: 'flex-end', p: 2 }}>
-                <Button
-                  variant="contained"
-                  endIcon={<ArrowForwardIcon />}
-                  onClick={() => navigate(`/courses/${courseId}/modules/${module.id}/materials`)}
-                >
-                  View Materials
-                </Button>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', p: 2 }}>
+              <Button
+                variant="contained"
+                endIcon={<ArrowForwardIcon />}
+                onClick={() => handleModuleClick(module.id)}
+                disabled={module.locked}  // Disable if the module is locked
+              >
+                {module.locked ? "Locked" : "View Materials"}
+              </Button>
+                {module.has_quiz && lockedModules.includes(module.id) && (
+                  <Button
+                    variant="outlined"
+                    onClick={() => handleQuizClick(module.id)}
+                  >
+                    Take Quiz
+                  </Button>
+                )}
               </Box>
             </Card>
           </Grid>

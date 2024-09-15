@@ -29,10 +29,13 @@ function Login({ setIsAuthenticated }) {
     try {
       const response = await axios.post("http://localhost:8000/token/", formData);
       if (response.status === 200) {
+        console.log(response)
         const token = response.data.access;
         const refresh = response.data.refresh;
+        const user = response.data.user; 
         localStorage.setItem("token", token);
         localStorage.setItem("refresh", refresh);
+        localStorage.setItem("user", JSON.stringify(user));
         setIsAuthenticated(true);
         setSuccessMessage("Sign-In successful!");
         navigate("/"); // Redirect to home or another page on successful login
