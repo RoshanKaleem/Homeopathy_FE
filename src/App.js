@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { createClient } from "contentful";
-import { BrowserRouter as Router, Route, Routes, Link, useNavigate } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
@@ -17,9 +17,6 @@ import Home from "./components/Home";
 import BlogList from "./components/blogList";
 import BlogPost from "./components/blogPost";
 import Testimonial from "./components/Testimonial";
-import { useTheme } from "@mui/material/styles";
-import { CssBaseline } from "@mui/material";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Register from "./components/Register";
 import Login from "./components/Login";
 import Logout from "./components/Logout";
@@ -28,7 +25,10 @@ import Course from "./components/Course";
 import ModuleList from './components/ModuleList';
 import MaterialList from './components/MaterialList';
 import QuizPage from "./components/QuizPage";
+import QuizDashboard from "./components/QuizDashboard";
 import AdminDashboard from "./components/AdminDashboard";
+import Footer from "./components/Footer";
+import { CssBaseline, useTheme, ThemeProvider, createTheme } from "@mui/material";
 
 function App() {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -53,7 +53,6 @@ function App() {
     };
     getAllEntries();
 
-    // Check if the user is authenticated by checking for the token
     const token = localStorage.getItem("token");
     if (token) {
       setIsAuthenticated(true);
@@ -71,13 +70,13 @@ function App() {
   const theme = createTheme({
     palette: {
       primary: {
-        main: "#6B4226", // Brown color
+        main: "#6B4226",
       },
       secondary: {
-        main: "#B5651D", // Burnt orange color
+        main: "#B5651D",
       },
       background: {
-        default: "#F5F5DC", // Beige background
+        default: "#F5F5DC",
       },
     },
     typography: {
@@ -155,7 +154,10 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Router>
-        <div className="App">
+        <div
+          className="App"
+          style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
+        >
           <AppBar position="static">
             <Toolbar
               sx={{
@@ -220,24 +222,30 @@ function App() {
             {drawer}
           </Drawer>
 
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/blog" element={<BlogList />} />
-            <Route path="/blog/:slug" element={<BlogPost />} />
-            <Route path="/testimonial" element={<Testimonial />} />
-            <Route path="/page/:slug" element={<Page />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
-            <Route
-              path="/logout"
-              element={<Logout setIsAuthenticated={setIsAuthenticated} />}
-            />
-            <Route path="/courses" element={<Course />} />
-            <Route path="/courses/:courseId/modules" element={<ModuleList />} />
-            <Route path="/courses/:courseId/modules/:moduleId/materials" element={<MaterialList />} />
-            <Route path="/courses/:courseId/modules/:moduleId/quiz" element={<QuizPage />} />
-            <Route path="/admin" element={<AdminDashboard/>} />
-          </Routes>
+          <div style={{ flex: 1 }}>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/blog" element={<BlogList />} />
+              <Route path="/blog/:slug" element={<BlogPost />} />
+              <Route path="/testimonial" element={<Testimonial />} />
+              <Route path="/page/:slug" element={<Page />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
+              <Route
+                path="/logout"
+                element={<Logout setIsAuthenticated={setIsAuthenticated} />}
+              />
+              <Route path="/courses" element={<Course />} />
+              <Route path="/courses/:courseId/modules" element={<ModuleList />} />
+              <Route path="/courses/:courseId/modules/:moduleId/materials" element={<MaterialList />} />
+              <Route path="/courses/:courseId/modules/:moduleId/quiz" element={<QuizPage />} />
+              <Route path="/quizdash" element={<QuizDashboard />} />
+              <Route path="/admin" element={<AdminDashboard/>} />
+            </Routes>
+          </div>
+
+          <br/>
+          <Footer />
         </div>
       </Router>
     </ThemeProvider>
