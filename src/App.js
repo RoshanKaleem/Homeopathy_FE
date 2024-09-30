@@ -29,6 +29,8 @@ import QuizDashboard from "./components/QuizDashboard";
 import AdminDashboard from "./components/AdminDashboard";
 import Footer from "./components/Footer";
 import BookConsultancy from "./components/BookConsultancy";
+import ProtectedRoute  from "./ProtectedRoute";
+import { AuthProvider } from "./AuthContext";
 import { CssBaseline, useTheme, ThemeProvider, createTheme } from "@mui/material";
 
 function App() {
@@ -224,26 +226,25 @@ function App() {
           </Drawer>
 
           <div style={{ flex: 1 }}>
+          <AuthProvider>
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/blog" element={<BlogList />} />
+              <Route path="/blog" element={<ProtectedRoute element={<BlogList />} />} />
               <Route path="/blog/:slug" element={<BlogPost />} />
               <Route path="/testimonial" element={<Testimonial />} />
               <Route path="/page/:slug" element={<Page />} />
               <Route path="/register" element={<Register />} />
               <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
-              <Route
-                path="/logout"
-                element={<Logout setIsAuthenticated={setIsAuthenticated} />}
-              />
-              <Route path="/courses" element={<Course />} />
-              <Route path="/courses/:courseId/modules" element={<ModuleList />} />
-              <Route path="/courses/:courseId/modules/:moduleId/materials" element={<MaterialList />} />
-              <Route path="/courses/:courseId/modules/:moduleId/quiz" element={<QuizPage />} />
-              <Route path="/quizdash" element={<QuizDashboard />} />
-              <Route path="/admin" element={<AdminDashboard/>} />
-              <Route path="/book-consultancy" element={<BookConsultancy/>} />
+              <Route path="/logout" element={<Logout setIsAuthenticated={setIsAuthenticated} />} />
+              <Route path="/courses" element={<ProtectedRoute element={<Course />} />} />
+              <Route path="/courses/:courseId/modules" element={<ProtectedRoute element={<ModuleList />} />} />
+              <Route path="/courses/:courseId/modules/:moduleId/materials" element={<ProtectedRoute element={<MaterialList />} />} />
+              <Route path="/courses/:courseId/modules/:moduleId/quiz" element={<ProtectedRoute element={<QuizPage />} />} />
+              <Route path="/quizdash" element={<ProtectedRoute element={<QuizDashboard />} />} />
+              <Route path="/admin" element={<ProtectedRoute element={<AdminDashboard />} />} />
+              <Route path="/book-consultancy" element={<ProtectedRoute element={<BookConsultancy />} />} />
             </Routes>
+          </AuthProvider>
           </div>
 
           <br/>
