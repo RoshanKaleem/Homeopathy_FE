@@ -28,6 +28,7 @@ import QuizPage from "./components/QuizPage";
 import QuizDashboard from "./components/QuizDashboard";
 import AdminDashboard from "./components/AdminDashboard";
 import Footer from "./components/Footer";
+import BookConsultancy from "./components/BookConsultancy";
 import { CssBaseline, useTheme, ThemeProvider, createTheme } from "@mui/material";
 
 function App() {
@@ -241,6 +242,7 @@ function App() {
               <Route path="/courses/:courseId/modules/:moduleId/quiz" element={<QuizPage />} />
               <Route path="/quizdash" element={<QuizDashboard />} />
               <Route path="/admin" element={<AdminDashboard/>} />
+              <Route path="/book-consultancy" element={<BookConsultancy/>} />
             </Routes>
           </div>
 
