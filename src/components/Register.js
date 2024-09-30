@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { TextField, Button, Box, Typography } from "@mui/material";
+import { useNavigate } from 'react-router-dom';
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -14,6 +15,7 @@ function Register() {
 
   const [errors, setErrors] = useState({});
   const [successMessage, setSuccessMessage] = useState("");
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
@@ -31,6 +33,9 @@ function Register() {
       const response = await axios.post("http://localhost:8000/register/", formData);
       if (response.status === 201) {
         setSuccessMessage("Registration successful!");
+
+        navigate('/login');
+
       }
     } catch (error) {
       if (error.response && error.response.data) {
