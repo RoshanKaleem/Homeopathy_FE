@@ -14,24 +14,43 @@ function ScheduleMeeting() {
 
   const scheduleAPI = async () => {
     const formattedDateTime = startTime.format('YYYY-MM-DD HH:mm');
-    await axios({
-      method: 'post',
-      url: `http://localhost:8000/api/admin/create-meeting`,
-      data: { 
-        name, 
-        email, 
-        query, 
-        start_time: formattedDateTime 
-      }, 
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      }
-    }).then(res => {
-      console.log("Meeting successfully created!");
-    }).catch(err => {
-      console.log(err);
-    });
-  };
+    const token = localStorage.getItem("token"); // Retrieve the token
+
+    try {
+        // // Step 1: Create the meeting
+        // const res = await axios({
+        //     method: 'post',
+        //     url: `http://127.0.0.1:8000/api/admin/create-meeting`,
+        //     data: { 
+        //         name, 
+        //         email, 
+        //         query, 
+        //         start_time: formattedDateTime 
+        //     }, 
+        //     headers: {
+        //         Authorization: `Bearer ${token}`,
+        //     }
+        // });
+
+        console.log("Meeting successfully created!");
+
+        // Step 2: Create PayPal order
+        const orderRes = await axios.post(`http://127.0.0.1:8000/api/payments/create-order/`, {}, {
+            headers: {
+                Authorization: `Bearer ${token}`, // Include the token here as well
+            }
+        });
+        const orderId = orderRes.data.id;
+
+        // Step 3: Redirect to PayPal for payment approval
+        window.location.href = `https://www.sandbox.paypal.com/checkoutnow?token=${orderId}`;
+
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+
 
   return (
     <Container maxWidth="md" style={{ textAlign: 'center', padding: '20px' }}>
