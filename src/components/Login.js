@@ -27,12 +27,12 @@ function Login({ setIsAuthenticated }) {
     setSuccessMessage("");
 
     try {
-      const response = await axios.post(`http://{process.env.REACT_APP_URL}/token/`, formData);
+      const response = await axios.post(`http://${process.env.REACT_APP_URL}/token/`, formData);
       if (response.status === 200) {
         console.log(response)
         const token = response.data.access;
         const refresh = response.data.refresh;
-        const user = response.data.user; 
+        const user = response.data.user;
         localStorage.setItem("token", token);
         localStorage.setItem("refresh", refresh);
         localStorage.setItem("user", JSON.stringify(user));

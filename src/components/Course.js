@@ -8,7 +8,7 @@ function Course() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`http://{process.env.REACT_APP_URL}/api/courses/`)
+    fetch(`http://${process.env.REACT_APP_URL}/api/courses/`)
       .then(response => response.json())
       .then(data => setCourses(data))
       .catch(error => console.error('Error fetching courses:', error));
@@ -20,7 +20,7 @@ function Course() {
       <Grid container spacing={3}>
         {courses.map(course => (
           <Grid item xs={12} sm={6} md={4} key={course.id}>
-            <Card 
+            <Card
               sx={{
                 transition: '0.3s',
                 '&:hover': {
@@ -36,9 +36,9 @@ function Course() {
                 </Typography>
               </CardContent>
               <Box sx={{ display: 'flex', justifyContent: 'flex-end', p: 2 }}>
-                <Button 
-                  variant="contained" 
-                  endIcon={<ArrowForwardIcon />} 
+                <Button
+                  variant="contained"
+                  endIcon={<ArrowForwardIcon />}
                   onClick={() => navigate(`/courses/${course.id}/modules`)}
                 >
                   View Modules

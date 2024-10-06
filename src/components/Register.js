@@ -3,6 +3,8 @@ import axios from "axios";
 import { TextField, Button, Box, Typography } from "@mui/material";
 import { useNavigate } from 'react-router-dom';
 
+const BASE_URL = process.env.REACT_APP_URL
+
 function Register() {
   const [formData, setFormData] = useState({
     username: "",
@@ -30,7 +32,7 @@ function Register() {
     setSuccessMessage("");
 
     try {
-      const response = await axios.post(`http://{process.env.REACT_APP_URL}/register/`, formData);
+      const response = await axios.post(`http://${BASE_URL}/register/`, formData);
       if (response.status === 201) {
         setSuccessMessage("Registration successful!");
 
