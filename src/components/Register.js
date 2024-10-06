@@ -30,7 +30,7 @@ function Register() {
     setSuccessMessage("");
 
     try {
-      const response = await axios.post("http://localhost:8000/register/", formData);
+      const response = await axios.post(`http://{process.env.REACT_APP_URL}/register/`, formData);
       if (response.status === 201) {
         setSuccessMessage("Registration successful!");
 
