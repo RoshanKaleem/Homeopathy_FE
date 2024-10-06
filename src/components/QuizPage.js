@@ -10,7 +10,7 @@ function QuizPage() {
 
   // Fetch quiz data
   useEffect(() => {
-    fetch(`http://${process.env.REACT_APP_URL}/api/modules/${moduleId}/quiz/`)
+    fetch(`${process.env.REACT_APP_URL}/api/modules/${moduleId}/quiz/`)
       .then(response => response.json())
       .then(data => setQuiz(data.quiz))
       .catch(error => console.error('Error fetching quiz:', error));
@@ -24,7 +24,7 @@ function QuizPage() {
   };
 
   const handleSubmit = () => {
-    fetch(`http://${process.env.REACT_APP_URL}/api/modules/${moduleId}/submit-quiz/`, {
+    fetch(`${process.env.REACT_APP_URL}/api/modules/${moduleId}/submit-quiz/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

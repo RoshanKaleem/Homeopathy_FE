@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create an axios instance
 const axiosInstance = axios.create({
-  baseURL: `http://${process.env.REACT_APP_URL}/`,
+  baseURL: `${process.env.REACT_APP_URL}/`,
 });
 
 // Add a request interceptor to include the token in the headers

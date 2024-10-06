@@ -12,7 +12,7 @@ function ModuleList() {
   useEffect(() => {
     const token = localStorage.getItem('token'); // Retrieve the JWT token from localStorage
 
-    fetch(`http://${process.env.REACT_APP_URL}/api/courses/${courseId}/modules/`, {
+    fetch(`${process.env.REACT_APP_URL}/api/courses/${courseId}/modules/`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`, // Include the JWT token in the Authorization header

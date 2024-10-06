@@ -8,7 +8,7 @@ function Course() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`http://${process.env.REACT_APP_URL}/api/courses/`)
+    fetch(`${process.env.REACT_APP_URL}/api/courses/`)
       .then(response => response.json())
       .then(data => setCourses(data))
       .catch(error => console.error('Error fetching courses:', error));

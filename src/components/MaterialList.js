@@ -16,7 +16,7 @@ function MaterialList() {
   useEffect(() => {
     const token = localStorage.getItem('token'); // Retrieve the JWT token from localStorage
 
-    fetch(`http://${process.env.REACT_APP_URL}/api/modules/${selectedModule}/materials/`, {
+    fetch(`${process.env.REACT_APP_URL}/api/modules/${selectedModule}/materials/`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`, // Include the JWT token in the Authorization header
@@ -32,7 +32,7 @@ function MaterialList() {
   useEffect(() => {
     const token = localStorage.getItem('token'); // Retrieve the JWT token from localStorage
 
-    fetch(`http://${process.env.REACT_APP_URL}/api/courses/${courseId}/modules/`, {
+    fetch(`${process.env.REACT_APP_URL}/api/courses/${courseId}/modules/`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`, // Include the JWT token in the Authorization header
@@ -91,7 +91,7 @@ function MaterialList() {
                     {material.material_type === 'video' && (
                       <Box sx={{ width: '100%', textAlign: 'center' }}>
                         <video controls style={{ width: '100%', maxWidth: '800px' }}>
-                          <source src={`http://${process.env.REACT_APP_URL}${material.upload}`} type="video/mp4" />
+                          <source src={`${process.env.REACT_APP_URL}${material.upload}`} type="video/mp4" />
                           Your browser does not support the video tag.
                         </video>
                       </Box>
@@ -103,7 +103,7 @@ function MaterialList() {
                           variant="contained"
                           color="primary"
                           startIcon={<DownloadIcon />}
-                          href={`http://${process.env.REACT_APP_URL}${material.upload}`}
+                          href={`${process.env.REACT_APP_URL}${material.upload}`}
                           download
                         >
                           Download File

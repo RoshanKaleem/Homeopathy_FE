@@ -16,7 +16,7 @@ function Logout({ setIsAuthenticated }) {
 
     try {
       await axios.post(
-        `http://${process.env.REACT_APP_URL}/logout/`,
+        `${process.env.REACT_APP_URL}/logout/`,
         { refresh_token: refresh },
         {
           headers: {
