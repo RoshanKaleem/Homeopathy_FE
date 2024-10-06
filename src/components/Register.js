@@ -32,7 +32,7 @@ function Register() {
     setSuccessMessage("");
 
     try {
-      const response = await axios.post(`http://${BASE_URL}/register/`, formData);
+      const response = await axios.post(`${BASE_URL}/register/`, formData);
       if (response.status === 201) {
         setSuccessMessage("Registration successful!");
 
