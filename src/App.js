@@ -33,6 +33,8 @@ import ProtectedRoute  from "./ProtectedRoute";
 import { AuthProvider } from "./AuthContext";
 import { CssBaseline, useTheme, ThemeProvider, createTheme } from "@mui/material";
 
+// require('dotenv').config()
+console.log(process.env.REACT_APP_DEV_ENV)
 function App() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(
