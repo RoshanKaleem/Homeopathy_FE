@@ -22,6 +22,7 @@ import Login from "./components/Login";
 import Logout from "./components/Logout";
 import Page from "./components/Page";
 import Course from "./components/Course";
+import Meeting  from "./components/Meeting";
 import ModuleList from './components/ModuleList';
 import MaterialList from './components/MaterialList';
 import QuizPage from "./components/QuizPage";
@@ -241,8 +242,9 @@ function App() {
               <Route path="/courses/:courseId/modules/:moduleId/materials" element={<ProtectedRoute element={<MaterialList />} />} />
               <Route path="/courses/:courseId/modules/:moduleId/quiz" element={<ProtectedRoute element={<QuizPage />} />} />
               <Route path="/quizdash" element={<ProtectedRoute element={<QuizDashboard />} />} />
-              <Route path="/admin" element={<ProtectedRoute element={<AdminDashboard />} />} />
+              <Route path="/admin" element={<AdminDashboard />}/>
               <Route path="/book-consultancy" element={<ProtectedRoute element={<BookConsultancy />} />} />
+              <Route path="/meetings" element={<Meeting />} />
             </Routes>
           </AuthProvider>
           </div>

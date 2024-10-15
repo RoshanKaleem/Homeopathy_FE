@@ -27,7 +27,7 @@ function Login({ setIsAuthenticated }) {
     setSuccessMessage("");
 
     try {
-      const response = await axios.post("http://localhost:8000/token/", formData);
+      const response = await axios.post("http://127.0.0.1:8000/token/", formData);
       if (response.status === 200) {
         console.log(response)
         const token = response.data.access;

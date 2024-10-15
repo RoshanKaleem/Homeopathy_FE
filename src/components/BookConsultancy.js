@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import { TextField, Button, Container, Typography, Box } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -13,44 +13,75 @@ function ScheduleMeeting() {
   const [startTime, setStartTime] = useState(dayjs());
 
   const scheduleAPI = async () => {
-    const formattedDateTime = startTime.format('YYYY-MM-DD HH:mm');
-    const token = localStorage.getItem("token"); // Retrieve the token
+    const token = localStorage.getItem("token");
 
     try {
-        // // Step 1: Create the meeting
-        // const res = await axios({
-        //     method: 'post',
-        //     url: `http://127.0.0.1:8000/api/admin/create-meeting`,
-        //     data: { 
-        //         name, 
-        //         email, 
-        //         query, 
-        //         start_time: formattedDateTime 
-        //     }, 
-        //     headers: {
-        //         Authorization: `Bearer ${token}`,
-        //     }
-        // });
+      // Step 1: Create PayPal order
+      const orderRes = await axios.post(`http://127.0.0.1:8000/api/payments/create-order/`, {}, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      });
 
-        console.log("Meeting successfully created!");
+      // Step 2: Check if the order was created successfully
+      if (orderRes.data && orderRes.data.links) {
+        const approvalUrl = orderRes.data.links.find(link => link.rel === 'payer-action').href;
 
-        // Step 2: Create PayPal order
-        const orderRes = await axios.post(`http://127.0.0.1:8000/api/payments/create-order/`, {}, {
-            headers: {
-                Authorization: `Bearer ${token}`, // Include the token here as well
-            }
-        });
-        const orderId = orderRes.data.id;
+        if (approvalUrl) {
+          console.log("Redirecting to PayPal approval URL:", approvalUrl);
 
-        // Step 3: Redirect to PayPal for payment approval
-        window.location.href = `https://www.sandbox.paypal.com/checkoutnow?token=${orderId}`;
+          localStorage.setItem("userDetails", JSON.stringify({ name, email, query, startTime }));
+          // Redirect to the approval URL
+          window.location.href = approvalUrl;
 
-    } catch (err) {
-        console.error(err);
+          // Capture the order after redirection (you might want to store the order ID before redirection)
+          const orderId = orderRes.data.id; // Store order ID for capture
+          localStorage.setItem("orderId", orderId);
+
+        } else {
+          console.error("Approval URL not found");
+        }
+      } else {
+        console.error("Invalid order response:", orderRes.data);
+      }
+
+    } catch (error) {
+      console.error("Error creating PayPal order:", error);
+      alert("An error occurred while creating the order. Please check your input and try again.");
     }
-};
+  };
 
+  // const captureOrder = async (orderId) => {
+  //   const token = localStorage.getItem("token"); // Retrieve your token
 
+  //   try {
+  //     const response = await axios.post(`http://127.0.0.1:8000/api/payments/capture-order/`, { order_id: orderId }, {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`
+  //       }
+  //     });
+
+  //     const payload = {
+  //       "name": name,
+  //       "email": email, // Max 200 chars
+  //       "query": query,
+  //       "start_time": startTime,
+  //     };
+
+  //     if (response.status === 201) {
+  //       console.log("Order captured successfully:", response.data);
+  //       const meetingRes = await axios.post(`http://127.0.0.1:8000/api/admin/create-meeting/`, payload);
+  //       console.log('Meeting created:', meetingRes);
+  //       // Handle success, e.g., update UI, show success message, etc.
+  //     } else {
+  //       console.error("Failed to capture order:", response.data);
+  //       alert(`Error: ${response.data.error}`);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error capturing order:", error);
+  //     alert("An error occurred while capturing the order. Please try again.");
+  //   }
+  // };
 
   return (
     <Container maxWidth="md" style={{ textAlign: 'center', padding: '20px' }}>

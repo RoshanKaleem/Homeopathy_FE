@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Button, RadioGroup, FormControlLabel, Radio, Box, Typography } from '@mui/material';
+import withAuth from '../AuthContext';
 
 function QuizPage() {
   const { moduleId } = useParams();
@@ -10,7 +11,7 @@ function QuizPage() {
 
   // Fetch quiz data
   useEffect(() => {
-    fetch(`http://localhost:8000/api/modules/${moduleId}/quiz/`)
+    fetch(`http://127.0.0.1:8000/api/modules/${moduleId}/quiz/`)
       .then(response => response.json())
       .then(data => setQuiz(data.quiz))
       .catch(error => console.error('Error fetching quiz:', error));
@@ -24,7 +25,7 @@ function QuizPage() {
   };
 
   const handleSubmit = () => {
-    fetch(`http://localhost:8000/api/modules/${moduleId}/submit-quiz/`, {
+    fetch(`http://127.0.0.1:8000/api/modules/${moduleId}/submit-quiz/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
