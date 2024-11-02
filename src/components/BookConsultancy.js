@@ -17,10 +17,9 @@ function ScheduleMeeting() {
     const token = localStorage.getItem("token"); // Retrieve the token
 
     try {
-      // Step 1: Create the meeting
-      const res = await axios({
+      const orderRes = await axios({
         method: "post",
-        url: `http://127.0.0.1:8000/api/admin/create-meeting`,
+        url: `http://127.0.0.1:8000/api/payments/create-order/`,
         data: {
           name,
           email,
@@ -30,19 +29,7 @@ function ScheduleMeeting() {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      });
-
-      console.log("Meeting successfully created!");
-
-      // Step 2: Create PayPal order
-      const orderRes = await axios.post(
-        `http://127.0.0.1:8000/api/payments/create-order/`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+      }
       );
       // Step 2: Check if the order was created successfully
       if (orderRes.data && orderRes.data.links) {
@@ -50,16 +37,8 @@ function ScheduleMeeting() {
           (link) => link.rel === "payer-action"
         ).href;
         if (approvalUrl) {
-          console.log("Redirecting to PayPal approval URL:", approvalUrl);
-          localStorage.setItem(
-            "userDetails",
-            JSON.stringify({ name, email, query, startTime })
-          );
-          // Redirect to the approval URL
+          console.log("Redirecting to PayPal approval URL");
           window.location.href = approvalUrl;
-          // Capture the order after redirection (you might want to store the order ID before redirection)
-          const orderId = orderRes.data.id; // Store order ID for capture
-          localStorage.setItem("orderId", orderId);
         } else {
           console.error("Approval URL not found");
         }

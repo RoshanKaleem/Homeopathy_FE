@@ -27,6 +27,7 @@ import MaterialList from './components/MaterialList';
 import QuizPage from "./components/QuizPage";
 import QuizDashboard from "./components/QuizDashboard";
 import AdminDashboard from "./components/AdminDashboard";
+import Meeting from "./components/Meeting";
 import Footer from "./components/Footer";
 import BookConsultancy from "./components/BookConsultancy";
 import ProtectedRoute  from "./ProtectedRoute";
@@ -131,6 +132,9 @@ function App() {
       <List>
         <ListItem button component={Link} to="/">
           <ListItemText primary="Home" />
+        </ListItem>
+        <ListItem button component={Link} to="/meeting">
+          <ListItemText primary="Meetings" />
         </ListItem>
         <ListItem button component={Link} to="/blog">
           <ListItemText primary="Blogs" />
@@ -245,7 +249,8 @@ function App() {
               <Route path="/quizdash" element={<ProtectedRoute element={<QuizDashboard />} />} />
               <Route path="/admin" element={<ProtectedRoute element={<AdminDashboard />} />} />
               <Route path="/book-consultancy" element={<ProtectedRoute element={<BookConsultancy />} />} />
-            </Routes>
+              <Route path="/meeting" element={<ProtectedRoute element={<Meeting/>} />} />
+             </Routes>
           </AuthProvider>
           </div>
 
