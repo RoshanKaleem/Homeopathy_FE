@@ -74,7 +74,7 @@ function Footer() {
             <Button
               variant="contained"
               color="secondary"
-              href="/contact"
+              href="/book-consultancy"
               sx={{ mt: 2 }}
             >
               Schedule a Consultation
