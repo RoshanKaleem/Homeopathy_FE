@@ -19,7 +19,7 @@ function ScheduleMeeting() {
     try {
       const orderRes = await axios({
         method: "post",
-        url: `http://127.0.0.1:8000/api/payments/create-order/`,
+        url: `${process.env.REACT_APP_URL}/api/payments/create-order/`,
         data: {
           name,
           email,

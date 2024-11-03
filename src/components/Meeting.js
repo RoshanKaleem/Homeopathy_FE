@@ -26,7 +26,7 @@ function Meeting() {
     try {
       const response = await axios({
         method: "post",
-        url: "http://127.0.0.1:8000/api/payments/capture-order/",
+        url: `${process.env.REACT_APP_URL}/api/payments/capture-order/`,
         data: {
           orderId,
           payerID,
@@ -49,7 +49,7 @@ function Meeting() {
     try {
       const response = await axios({
         method: "get",
-        url: "http://127.0.0.1:8000/api/meetings/",
+        url: `${process.env.REACT_APP_URL}/api/meetings/`,
         headers: {
             Authorization: `Bearer ${token}`,
         },
