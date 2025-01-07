@@ -65,7 +65,7 @@ const AdminDashboard = () => {
 
   const handleAddCourse = async () => {
     try {
-      const response = await axiosInstance.post('api/admin/courses/', newCourseData);
+      await axiosInstance.post('api/admin/courses/', newCourseData);
       // setCourses([...courses, response.data]);
       setIsAddingCourse(false);
       setNewCourseData({ title: '', description: '' });
@@ -77,7 +77,7 @@ const AdminDashboard = () => {
 
   const handleEditCourse = async (courseId) => {
     try {
-      const response = await axiosInstance.put(`api/admin/courses/${courseId}/`, newCourseData);
+      await axiosInstance.put(`api/admin/courses/${courseId}/`, newCourseData);
       setIsEditingCourseId(null);
       setUpdate(prevUpdate => !prevUpdate);
     } catch (error) {
@@ -90,7 +90,7 @@ const AdminDashboard = () => {
   const handleEditModule = async (moduleId) => {
     try {
       console.log(newModuleData)
-      const response = await axiosInstance.put(`/api/admin/modulesdel/${moduleId}/`, newModuleData);
+      await axiosInstance.put(`/api/admin/modulesdel/${moduleId}/`, newModuleData);
       // const updatedCourses = courses.map(course => ({
       //   ...course,
       //   modules: course.modules.map(module => module.id === moduleId ? response.data : module),
@@ -134,7 +134,7 @@ const AdminDashboard = () => {
 
   const handleAddModule = async () => {
     try {
-      const response = await axiosInstance.post(`api/admin/modules/${currentCourseId}/`, newModuleData);
+      await axiosInstance.post(`api/admin/modules/${currentCourseId}/`, newModuleData);
       setNewModuleData({ title: '', description: '', has_quiz: false });
       setIsAddingModule(false);
       setUpdate(prevUpdate => !prevUpdate);

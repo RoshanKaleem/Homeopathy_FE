@@ -1,17 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { createClient } from "contentful";
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 import { BLOCKS, INLINES } from "@contentful/rich-text-types";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import {
   Container,
   Grid,
-  Card,
-  CardContent,
   Typography,
-  Button,
-  Avatar,
   Box,
 } from "@mui/material";
 
